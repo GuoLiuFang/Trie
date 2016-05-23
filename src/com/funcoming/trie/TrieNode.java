@@ -1,5 +1,8 @@
 package com.funcoming.trie;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by LiuFangGuo on 5/18/16.
  */
@@ -44,4 +47,38 @@ public class TrieNode {
 
     }
 
+    /*
+    * 返回孩子节点,代表这个字符的。
+    * */
+    protected TrieNode getNode(char c) {
+        return this.children[c - 'a'];
+    }
+
+    protected List getWords() {
+        //Create a list to return
+        List list = new ArrayList();
+        //如果这个节点代表一个单词,word,那么就添加进来,返回的是从这个节点开始往下所有的word的集合。。
+        if (this.isWord) {
+            list.add(this.toString());
+        }
+        //如果这个节点还有孩子节点
+        if (!this.isLeaf) {
+            for (int i = 0; i < this.children.length; i++) {
+                if (this.children[i] != null) {
+                    list.addAll(this.children[i].getWords());
+                }
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public String toString() {
+        if (this.parent == null) {
+            return "";
+        } else {
+            return this.parent.toString() + new String(new char[]{this.character});
+        }
+
+    }
 }
